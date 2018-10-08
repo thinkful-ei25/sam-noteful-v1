@@ -10,7 +10,22 @@ const app = express();
 app.use(express.static('public'));
 
 app.get('/api/notes', (req, res) => {
-  res.json(data);
+  //destructring the query string into searchTerm
+  const { searchTerm } = req.query;
+
+  //running if statement to see if searchTerm exists
+  if( searchTerm ){
+    //filtering data based on searchTerm query
+    let filteredList = data.filter(item => {
+      return item.title.includes(searchTerm);
+    });
+    //returning filteredList of results in JSON
+    res.json(filteredList);
+  } else {
+    //otherwise returning all data if searchTerm doesn't exist
+    res.json(data);
+  }
+
 });
 
 app.get('/api/notes/:id', (req, res) =>{
