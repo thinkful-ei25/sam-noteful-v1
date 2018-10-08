@@ -7,7 +7,7 @@ const data = require('./db/notes');
 
 const app = express();
 
-//ADD STATIC SERVER HERE
+app.use(express.statis('public'));
 
 // INSERT EXPRESS APP CODE HERE...
 
