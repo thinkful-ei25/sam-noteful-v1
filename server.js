@@ -5,9 +5,13 @@ const express = require('express');
 
 const data = require('./db/notes');
 
+const logger = require('./middleware/logger');
+
 const { PORT } = require('./config');
 
 const app = express();
+
+app.use(logger);
 
 app.use(express.static('public'));
 
@@ -33,6 +37,12 @@ app.get('/api/notes', (req, res) => {
 app.get('/api/notes/:id', (req, res) =>{
   const answer = data.find(item => item.id === Number(req.params.id));
   res.json(answer);
+});
+
+app.use(function (req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  res.status(404).json({ message: 'Not Found' });
 });
 
 app.listen(PORT, function(){
