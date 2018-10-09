@@ -17,28 +17,31 @@ app.use(logger);
 
 app.use(express.static('public'));
 
-app.get('/api/notes', (req, res) => {
-  //destructring the query string into searchTerm
+app.get('/api/notes', (req, res, next) => {
   const { searchTerm } = req.query;
 
-  //running if statement to see if searchTerm exists
-  if( searchTerm ){
-    //filtering data based on searchTerm query
-    let filteredList = data.filter(item => {
-      return item.title.includes(searchTerm);
-    });
-    //returning filteredList of results in JSON
-    res.json(filteredList);
-  } else {
-    //otherwise returning all data if searchTerm doesn't exist
-    res.json(data);
-  }
-
+  notes.filter(searchTerm, (err, list) => {
+    if (err) {
+      return next(err); // goes to error handler
+    }
+    res.json(list); // responds with filtered array
+  });
 });
 
-app.get('/api/notes/:id', (req, res) =>{
-  const answer = data.find(item => item.id === Number(req.params.id));
-  res.json(answer);
+app.get('/api/notes/:id', (req, res, next) =>{
+  const id = req.params.id;
+  notes.find(id, (err,item) =>{
+    if(err){
+      return next(err);
+    }
+    if(item){
+      res.json(item);
+    } else {
+      next();
+    }
+  });
+
+
 });
 
 app.get('/boom', (req, res, next) => {
