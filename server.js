@@ -6,7 +6,7 @@ const morgan = require('morgan');
 
 const { PORT } = require('./config');
 const notesRouter = require('./router/notes.router');
-//const logger = require('./middleware/logger'); 
+//const logger = require('./middleware/logger'); Middleware logger we used to use
 
 const app = express();
 
