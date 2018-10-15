@@ -124,7 +124,7 @@ const noteful = (function () {
         // });
 
         api.create(noteObj)
-          .then(createResponse =>{
+          .then(createResponse => {
             store.currentNote = createResponse;
             return api.search(store.currentSearchTerm);
           })
